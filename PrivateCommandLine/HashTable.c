@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 #include"HashTable.h"
-#define CAPACITY 500 // Size of the Hash Table
+
 
 unsigned long hash_function(char* str) {
     unsigned long i = 0;
@@ -16,8 +14,10 @@ Ht_item* create_item(char* key,int(*func)(int,char**), char* help) {
     item->key = (char*) malloc (strlen(key) + 1);
     struct value val={val.func=func,val.help=(char*)malloc(strlen(help)+1)};
     item->value = val;
+
     strcpy(item->key, key);
     strcpy(item->value.help, help);
+
     return item;
 }
 

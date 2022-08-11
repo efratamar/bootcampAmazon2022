@@ -1,10 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include"PrivateCommandLine.h"
-#include<ctype.h>
-#include<string.h>
-#include"gaz_cam_lib.h"
-#include"command_handler.h"
+
+#include "PrivateCommandLine.h"
+extern gas_api *p_gaz;
 
 int GAS_API_GET_DLL_VERSION_CLI(int numParams,char** params)
 {
@@ -37,7 +33,8 @@ int GAS_API_GET_VIDEO_STATISTIC_CLI(int numParams,char** params)
     return 1;
 
 }
-int GAS_API_GET_STATUS_CLI (int numParams,char** params)
+int GAS_API_GET_STATUS_CLI(int numParams,char** params)
 {
  return 1;
 }
+
