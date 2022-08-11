@@ -1,5 +1,10 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define CAPACITY 500 // Size of the Hash Table
+
 unsigned long hash_function(char*);
 typedef struct Ht_item Ht_item;
 struct value{
@@ -23,7 +28,7 @@ struct HashTable {
     int size;
     int count;
 };
-Ht_item* create_item(char* ,int(*func)(int,char**), char* ) ;
+Ht_item* create_item(char*,int(*func)(int,char**),char*);
 HashTable* create_table(int);
 void free_item(Ht_item*);
 void free_table(HashTable*);

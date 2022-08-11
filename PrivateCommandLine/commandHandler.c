@@ -1,25 +1,11 @@
-#include<string.h>
-#include<PrivateCommandLine.h>
-#include<stdio.h>
-#include<HashTable.h>
-#define MAXPARAMETERS 100
-#define CAPACITY 500 // Size of the Hash Table
-#include <dlfcn.h>
-#include<stdlib.h>
-#include<assert.h>
-#include"gaz_cam_lib.h"
-#include"command_handler.h"
 
+#include"commandHandler.h"
+
+
+//global variables
 extern gas_api* p_gaz;
-extern handler_t* handler;
+extern p_handler handler;
 
-void handle_sigint(int sig)
-{
-    p_gaz->stop_record(handler);
-    p_gaz->stop_streaming(handler);
-    signal(SIGINT,handle_sigint);
-    printf("%d",sig);
-}
 char** split(char path[MAXPARAMETERS]){
     int index=0;
     char space[3]=" ";
@@ -34,6 +20,7 @@ char** split(char path[MAXPARAMETERS]){
     }
     return splitArray;
 }
+
 void decoderfunction(HashTable* ht,char** splitArray){
     if(strcmp(splitArray[1],"--help"))
         if((sizeof(splitArray)/sizeof (char*))>2)
@@ -41,8 +28,7 @@ void decoderfunction(HashTable* ht,char** splitArray){
             printf("error!!");
             return;
         }
-        else
-        {
+        else{
             char*h=ht_search(ht,splitArray[0]).help;
             if(h)
                 printf("%s",h);
@@ -58,6 +44,7 @@ void decoderfunction(HashTable* ht,char** splitArray){
     int(*func)(int,char**)=ht_search(ht,splitArray[0]).func;
     func(cnt-1,++splitArray);
 }
+
 void init_hash_table(HashTable* ht)
 {
     ht_insert(ht,"vrsn",GAS_API_GET_DLL_VERSION_CLI,"GAS_API_GET_DLL_VERSION");
@@ -71,12 +58,19 @@ void init_hash_table(HashTable* ht)
     ht_insert(ht,"gtstts",GAS_API_GET_STATUS_CLI,"GAS_API_GET_STATUS");
     print_table(ht);
 }
+
 gas_api* load_library()
 {
-    void* libHandle= dlopen("/home/efrat/build-gaz_cam_lib-Desktop-Debug/libgaz_cam_lib.so.1.0.0",RTLD_LAZY);
+    void* libHandle= dlopen("/home/efrat/Desktop/projects/build-gaz_cam_lib-Desktop-Debug/libgaz_cam_lib.so.1.0.0",RTLD_LAZY);
     assert (libHandle);
     gas_api *p_gaz;
     p_gaz = (gas_api*)dlsym(libHandle,"gas_api_lib");
     return p_gaz;
 }
 
+void handle_sigint(int sig)
+{
+    signal(SIGINT,handle_sigint);
+    p_gaz->stop_record(handler);
+    //p_gaz->stop_streaming(handler);
+}

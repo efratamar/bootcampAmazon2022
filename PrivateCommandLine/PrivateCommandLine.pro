@@ -10,7 +10,8 @@ CONFIG -= app_bundle
 SOURCES += \
         HashTable.c \
         PrivateCommandLine.c \
-        command_handler.c \
+        cfg_doc.cpp \
+        commandHandler.c \
         gpio.c \
         main.c
 
@@ -22,7 +23,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     HashTable.h \
     PrivateCommandLine.h \
-    command_handler.h \
+    cfg_doc.h \
+    commandHandler.h \
+    encode.h \
     gaz_cam_lib.h \
     gpio.h \
     queue.h

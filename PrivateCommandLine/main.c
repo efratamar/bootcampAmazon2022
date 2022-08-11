@@ -1,35 +1,28 @@
-#include<string.h>
-#include"PrivateCommandLine.h"
-#include<stdio.h>
-#include<stdlib.h>
-#include"HashTable.h"
+#include <string.h>
+#include <stdio.h>
+#include <dlfcn.h>
+#include "commandHandler.h"
+#include "HashTable.h"
+#include "PrivateCommandLine.h"
 #define MAXPARAMETERS 100
 #define CAPACITY 500 // Size of the Hash Table
-#include <dlfcn.h>
-#include"command_handler.h"
-#include"queue.h"
 
 gas_api* p_gaz;
-handler_t* handler;
+p_handler handler;
+
 int main()
 {
-    signal(SIGINT, handle_sigint);
+    signal(SIGINT, handle_sigint);//CTRL+C
     p_gaz=load_library();
     handler=p_gaz->init_dll();
     record_t record;
+    snapshot_t snapshot;
+    snapshot.file_name=BMPFILEPATH;
     p_gaz->start_record(handler,record);
-    snapshot_t s;
-    //p_gaz->do_snapshot(handler,s);
-    HashTable* ht = create_table(CAPACITY);
-    init_hash_table(ht);
-    char**splitArray=(char**)malloc(sizeof(char*));
-    if(!splitArray)exit(1);
-    char path[MAXPARAMETERS];
+    //p_gaz->do_snapshot(handler,snapshot);
     while (1) {
-        fgets(path,MAXPARAMETERS,stdin);
-        splitArray=split(path);
-        decoderfunction(ht,splitArray);
+        usleep(WAIT);
+           PRINTF_DBG("main loop\n");
     }
-    free_table(ht);
     return 0;
 }
